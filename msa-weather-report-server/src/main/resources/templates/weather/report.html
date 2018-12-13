@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+	integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
+	crossorigin="anonymous"/>
+
+<title>天气预报微服务</title>
+	<style>
+		body {
+			margin-top: 50px;
+			margin-left: 350px;
+			height: 890px;
+			background: #1c92d2;  /* fallback for old browsers */
+			background: -webkit-linear-gradient(to bottom, #f2fcfe, #1c92d2);  /* Chrome 10-25, Safari 5.1-6 */
+			background: linear-gradient(to bottom, #f2fcfe, #1c92d2); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+		}
+		.container {
+			margin: 0 auto;
+			padding-top: 50px;
+		}
+		.title {
+			color: dodgerblue;
+		}
+		.change{
+			margin-top: 10px;
+			margin-bottom: 10px;
+		}
+		h6 {
+			margin-left: 50px;
+		}
+		.custom-select{
+			height: calc(1.55rem + 2px);
+			padding: .0375rem 1.75rem .0375rem .75rem;
+		}
+		.border-info{
+			margin: 10px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="row title">
+			<h1 th:text="${reportModel.title}">waylau</h1>
+		</div>
+		<div class="row change">
+			<h5>当前城市：</h5>
+			<h5 class="text-success" th:text="${reportModel.report.city}">深圳</h5>
+			<h6>更换城市：</h6>
+			<select class="custom-select" id="selectCityId">
+				<option th:each="city : ${reportModel.cityList}"
+						th:value="${city.cityId}" th:text="${city.cityName}"
+						th:selected="${city.cityId eq reportModel.cityId}"></option>
+			</select>
+		</div>
+		<!--<div class="row">-->
+			<!--<p>-->
+				<!--空气质量指数：<span th:text="${reportModel.report.aqi}"></span>-->
+			<!--</p>-->
+		<!--</div>-->
+		<div class="row">
+			<p>
+				当前温度：<span th:text="${reportModel.report.wendu}"></span>
+			</p>
+		</div>
+		<div class="row">
+			<p>
+				温馨提示：<span th:text="${reportModel.report.ganmao}"></span>
+			</p>
+		</div>
+		<div class="row">
+			<div class="card border-info" th:each="forecast : ${reportModel.report.forecast}">
+				<div class="card-body text-info">
+					<p class ="card-text" th:text="${forecast.date}">日期</p>
+					<p class ="card-text" th:text="${forecast.type}">天气类型</p>
+					<p class ="card-text" th:text="${forecast.high}">最高温度</p>
+					<p class ="card-text" th:text="${forecast.low}">最低温度</p>
+					<p class ="card-text" th:text="${forecast.fengxiang}">风向</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js">
+		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+		integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+		integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+		crossorigin="anonymous"></script>
+	<!-- Optional JavaScript -->
+	<script type="text/javascript">
+        $(function(){
+            $("#selectCityId").change(function(){
+                var cityId = $("#selectCityId").val();
+                var url = '/report/cityId/'+ cityId;
+                console.log(url);
+                window.location.href = url;
+            })
+        });
+	</script>
+</body>
+</html>
